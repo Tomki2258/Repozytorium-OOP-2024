@@ -1,5 +1,10 @@
 public class NegativeLifespanException extends Exception{
-    public void getMessage(String message){
-        // sranie w banie lol
+    private final String message;
+    public NegativeLifespanException(String message){
+        this.message = message;
+    }
+    @Override
+    public String getMessage() {
+        return "Wyjebalo cos tam srake pierdake : " + message;
     }
 }
