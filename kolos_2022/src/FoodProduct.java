@@ -19,13 +19,14 @@ public class FoodProduct extends Product{
     public double getPrice(int year, int month) {
         return 0;
     }
-    public  double getPriceNew(int year, int month){
+
+    public double getPrice(double year, double month){
         double value = 0;
         int firstYear = 2010;
-        int targetIndex = (firstYear - year) + month;
+        double targetIndex = (firstYear - year) + month;
         for (int i = 0;i < prices.size();i++){
             if(i == targetIndex){
-                value += prices.get(targetIndex);
+                value += prices.get((int) targetIndex);
                 targetIndex += prices.size() / provinces.size();
             }
         }
