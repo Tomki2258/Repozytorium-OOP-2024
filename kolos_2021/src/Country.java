@@ -9,7 +9,10 @@ public abstract class Country {
     public final String name;
     private static Path pathOne;
     private static Path pathTwo;
-
+    private static CountryColumns cColumns;
+    public CountryColumns readCountryCollumns(){
+        return cColumns;
+    }
     public String getName(){
         return name;
     }
@@ -47,6 +50,7 @@ public abstract class Country {
             String lineCases = deathsCases.nextLine();
             List<String> splittedDeaths = List.of(line.split(";"));
             List<String> splittedCases = List.of(lineCases.split(";"));
+            System.out.println(splittedDeaths.get(foundIndex));
             int deaths = Integer.parseInt(splittedDeaths.get(foundIndex));
             int confirmedCases = Integer.parseInt(splittedCases.get(foundIndex));
             countryWithoutProvinces.addDailyStatistic(doDate(splittedDeaths.getFirst()),deaths,confirmedCases);
@@ -64,6 +68,7 @@ public abstract class Country {
             Scanner scanner = new Scanner(fileOne);
             splittedTop = Collections.singletonList(scanner.nextLine());
             countryColumns = getCountryColumns(String.valueOf(splittedTop), name);
+            cColumns = countryColumns;
 
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
@@ -127,6 +132,11 @@ public abstract class Country {
         }
     }
     public void getConfirmedCases(LocalDate date){
-
+        if(cColumns.columnCount == 1){
+            System.out.println("nie ma ma prowincji");
+        }
+        else{
+            System.out.println("ma prowincje");
+        }
     }
 }
