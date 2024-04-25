@@ -51,20 +51,34 @@ public class Person {
         LocalDate birthDate = doDate(splittedLine.get(1));
         LocalDate deathDate = doDate(splittedLine.get(2));
 
-        List<Person> parentsList = new ArrayList<>();
-
         return new Person(splittedNames.getFirst(), splittedNames.getLast(),birthDate,deathDate);
     }
     public static List<Person> fromCsv(Path path){
         File file = new File(String.valueOf(path));
         List<Person> personList = new ArrayList<>();
+        List<Person> parentsList = new ArrayList<>();
         try {
             Scanner scanner = new Scanner(file);
             scanner.nextLine();
             while (scanner.hasNext()){
                 String line = scanner.nextLine();
                 Person person = Person.fromCSVLine(line);
+                List<String> splittedList = List.of(line.split(","));
+                List<String> splittedParentOne = List.of(splittedList.get(splittedList.size() - 2).split(" "));
+                List<String> splittedParentTwo = List.of(splittedList.getLast().split(" "));
 
+                for (Person p : personList){
+                    if(splittedParentOne.getFirst().equals(p.firstName) && splittedParentOne.getLast().equals(p.lastName)){
+                        System.out.println("Dla " + person.firstName + " znaleziono " + p.firstName);
+                        parentsList.add(p);
+                    }
+                    if(splittedParentTwo.getFirst().equals(p.firstName) && splittedParentTwo.getLast().equals(p.lastName)){
+                        System.out.println("Dla " + person.firstName + " znaleziono " + p.firstName);
+                        parentsList.add(p);
+                    }
+                }
+                parents = parentsList;
+                parentsList.clear();
                 personList.add(person);
             }
         } catch (FileNotFoundException e) {
@@ -92,7 +106,7 @@ public class Person {
             System.out.println("ma obojga lol");
         }
         else{
-            System.out.println("co ci nie pasuje pało");
+            System.out.println(parents.size());
         }
 //        System.out.println(
 //                "Siema jestem " + this.firstName + " - " + this.lastName + " - " +
