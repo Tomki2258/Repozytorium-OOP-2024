@@ -12,6 +12,7 @@ public class Person {
     private String lastName;
     private LocalDate birthDate;
     private LocalDate deathDate;
+    public static List<Person> parents = new ArrayList<>();
     public String getFirstName(){
         return this.firstName;
     }
@@ -49,6 +50,9 @@ public class Person {
         List<String> splittedNames = splitNames(splittedLine.getFirst());
         LocalDate birthDate = doDate(splittedLine.get(1));
         LocalDate deathDate = doDate(splittedLine.get(2));
+
+        List<Person> parentsList = new ArrayList<>();
+
         return new Person(splittedNames.getFirst(), splittedNames.getLast(),birthDate,deathDate);
     }
     public static List<Person> fromCsv(Path path){
@@ -61,24 +65,38 @@ public class Person {
                 String line = scanner.nextLine();
                 Person person = Person.fromCSVLine(line);
 
-                for (Person p : personList){
-                    if(p.getLastName().equals(person.getLastName()) && p.getFirstName().equals(person.getFirstName())){
-                        throw new AmbiguousPersonException();
-                    }
-                }
-
                 personList.add(person);
             }
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
-        } catch (NegativeLifespanException | AmbiguousPersonException e) {
+        } catch (NegativeLifespanException e) {
             throw new RuntimeException(e);
         }
+
         return personList;
     }
-    public void describePerson(){
+    public void printData(){
         System.out.println(
-                "Siema jestem " + this.firstName + " - " + this.lastName + " - " + this.birthDate + " - " + this.deathDate
-        );
+                "Siema jestem " + this.firstName + " - " + this.lastName + " - " +
+                       this.birthDate + " - " + this.deathDate
+       );
+    }
+    public void describePerson(){
+        if(parents.isEmpty()){
+            System.out.println("Nie ma rodzicow");
+        }
+        else if (parents.size() == 1){
+            System.out.println("ma rodzica");
+        }
+        else if(parents.size() == 2){
+            System.out.println("ma obojga lol");
+        }
+        else{
+            System.out.println("co ci nie pasuje pało");
+        }
+//        System.out.println(
+//                "Siema jestem " + this.firstName + " - " + this.lastName + " - " +
+//                        this.birthDate + " - " + this.deathDate + " - " + parents.getFirst()  + " - " + parents.getLast()
+//        );
     }
 }
